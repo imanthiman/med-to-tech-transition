@@ -140,3 +140,9 @@ REST_FRAMEWORK = {
 import os
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+import os
+
+PORT = os.environ.get('PORT')
+if PORT:
+    os.environ['DJANGO_RUNSERVER_PLUS_PORT'] = PORT
