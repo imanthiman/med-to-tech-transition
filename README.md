@@ -27,3 +27,5 @@ A Django-based appointment management system designed for small medical practice
 - Email reminders via SendGrid
 
 ## 📁 Project Structure
+=======
+# med-to-tech-transition
