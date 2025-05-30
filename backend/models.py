@@ -1,6 +1,6 @@
 from django.db import models
 
-class CosmeticDoctor(models.Model):
+class Doctor(models.Model):
     name = models.CharField(max_length=100)
     clinic = models.CharField(max_length=200)
     specialty = models.CharField(max_length=100)
