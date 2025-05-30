@@ -1,0 +1,29 @@
+# Virtual environment
+env/
+venv/
+
+# Bytecode files
+__pycache__/
+*.py[cod]
+
+# Database files
+*.sqlite3
+db.sqlite3
+
+# Secret config files
+.env
+
+# macOS system files
+.DS_Store
+
+# VS Code settings
+.vscode/
+
+# Logs and system files
+*.log
+*.pot
+
+# Django migration backups (optional)
+*.pyc
+*.pyo
+*.pyd
