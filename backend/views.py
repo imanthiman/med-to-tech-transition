@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import generics
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
@@ -20,6 +21,20 @@ class AppointmentListPageView(ListView):
     model = Appointment
     template_name = 'appointments.html'
     context_object_name = 'appointments'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        doctor = self.request.GET.get('doctor')
+        patient = self.request.GET.get('patient')
+        appointment_date = self.request.GET.get('appointment_date')
+
+        if doctor:
+            queryset = queryset.filter(doctor__full_name__icontains=doctor)
+        if patient:
+            queryset = queryset.filter(patient__name__icontains=patient)
+        if appointment_date:
+            queryset = queryset.filter(appointment_date__date=appointment_date)
+        return queryset
 
 class AppointmentUpdateView(UpdateView):
     model = Appointment
