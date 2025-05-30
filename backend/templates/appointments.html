@@ -9,8 +9,10 @@
         {% for appt in appointments %}
             <li>
                 <strong>{{ appt.patient.name }}</strong> with 
-                <em>{{ appt.doctor.full_name }}</em> on 
+                <em>Dr. {{ appt.doctor.full_name }}</em> on 
                 {{ appt.appointment_date|date:"Y-m-d H:i" }} — {{ appt.reason }}
+                [<a href="{% url 'appointment-edit' appt.pk %}">Edit</a>]
+                [<a href="{% url 'appointment-delete' appt.pk %}">Delete</a>]
             </li>
         {% empty %}
             <li>No appointments found.</li>
