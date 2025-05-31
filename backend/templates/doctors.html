@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Appointments List</title>
+</head>
+<body>
+    <h1>Filter</h1>
+    <form method="get" action="">
+        <label for="doctor">Doctor:</label>
+        <input type="text" name="doctor" id="doctor" value="{{ request.GET.doctor }}">
+
+        <button type="submit">Filter</button>
+        <a href="{% url 'doctors-page' %}">Clear Filters</a>
+    </form>
+    <h2>Doctors</h2>
+    <ul>
+        {% for doc in doctors %}
+            <li>
+                <em>Dr. {{ doc.full_name }}</em>
+                [<a href="{% url 'doctor-edit' doc.pk %}">Edit</a>]
+                [<a href="{% url 'doctor-delete' doc.pk %}">Delete</a>]
+            </li>
+        {% empty %}
+            <li>No Doctors found.</li>
+        {% endfor %}
+    </ul>
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.doctor %}&doctor={{ request.GET.doctor }}{% endif %}">Previous</a>
+    {% endif %}
+
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.doctor %}&doctor={{ request.GET.doctor }}{% endif %}">Next</a>
+    {% endif %}
+</div>
+</body>z
+</html>
