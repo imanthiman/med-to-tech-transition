@@ -16,6 +16,7 @@
         <input type="date" name="appointment_date" id="appointment_date" value="{{ request.GET.appointment_date }}">
 
         <button type="submit">Filter</button>
+        <a href="{% url 'appointments-page' %}">Clear Filters</a>
     </form>
     <h2>Appointments</h2>
     <ul>
@@ -30,6 +31,17 @@
         {% empty %}
             <li>No appointments found.</li>
         {% endfor %}
-    </ul>
-</body>
+</ul>
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.doctor %}&doctor={{ request.GET.doctor }}{% endif %}{% if request.GET.patient %}&patient={{ request.GET.patient }}{% endif %}{% if request.GET.appointment_date %}&appointment_date={{ request.GET.appointment_date }}{% endif %}">Previous</a>
+    {% endif %}
+
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.doctor %}&doctor={{ request.GET.doctor }}{% endif %}{% if request.GET.patient %}&patient={{ request.GET.patient }}{% endif %}{% if request.GET.appointment_date %}&appointment_date={{ request.GET.appointment_date }}{% endif %}">Next</a>
+    {% endif %}
+</div>
+</body>z
 </html>

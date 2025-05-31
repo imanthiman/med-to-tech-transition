@@ -1,7 +1,10 @@
 from django.db.models import Q
 from rest_framework import generics
 from django.views.generic import ListView, UpdateView, DeleteView
+from django.views import View
 from django.urls import reverse_lazy
+from django.core.paginator import Paginator
+from django.shortcuts import render
 from .models import Doctor, Patient, Appointment
 from .serializers import DoctorSerializer, PatientSerializer, AppointmentSerializer
 
@@ -17,24 +20,35 @@ class AppointmentListCreateView(generics.ListCreateAPIView):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
 
-class AppointmentListPageView(ListView):
-    model = Appointment
+class AppointmentListPageView(View):
     template_name = 'appointments.html'
-    context_object_name = 'appointments'
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        doctor = self.request.GET.get('doctor')
-        patient = self.request.GET.get('patient')
-        appointment_date = self.request.GET.get('appointment_date')
+    def get(self, request):
+        appointments_list = Appointment.objects.all()
+
+        # Filtering
+        doctor = request.GET.get('doctor')
+        patient = request.GET.get('patient')
+        appointment_date = request.GET.get('appointment_date')
 
         if doctor:
-            queryset = queryset.filter(doctor__full_name__icontains=doctor)
+            appointments_list = appointments_list.filter(doctor__full_name__icontains=doctor)
         if patient:
-            queryset = queryset.filter(patient__name__icontains=patient)
+            appointments_list = appointments_list.filter(patient__name__icontains=patient)
         if appointment_date:
-            queryset = queryset.filter(appointment_date__date=appointment_date)
-        return queryset
+            appointments_list = appointments_list.filter(appointment_date__date=appointment_date)
+
+        # Pagination
+        paginator = Paginator(appointments_list, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
+        context = {
+            'appointments': page_obj,
+            'page_obj': page_obj
+        }
+
+        return render(request, self.template_name, context)
 
 class AppointmentUpdateView(UpdateView):
     model = Appointment
