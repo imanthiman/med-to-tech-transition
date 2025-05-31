@@ -44,7 +44,7 @@ class DoctorListPageView(View):
 
 class DoctorUpdateView(UpdateView):
     model = Doctor
-    fields = ['full_name', 'clinic', 'specialty', 'years_of_exprience', 'contact_number']
+    fields = ['full_name', 'clinic', 'specialty', 'years_of_experience', 'contact_number']
     template_name = 'doctor_edit.html'
     success_url = reverse_lazy('doctors-page')
 
